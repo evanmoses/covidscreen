@@ -6,13 +6,14 @@ const puppeteer = require('puppeteer');
   const page = await browser.newPage();
   await page.goto('http://localhost:3000');
 
-  const randomTemp = (Math.floor(Math.random() * (369 - 362) + 362) / 10).toString();
+  const randomTemp = (Math.floor(Math.random() * (368 - 360) + 360) / 10).toString();
   const today = new Date().toLocaleDateString('en-US');
 
   const form = await page.$('form');
   const formName = await (await form.getProperty('id')).jsonValue();
   const formSuffix = formName.slice(12);
   console.log(formSuffix);
+  console.log(randomTemp);
 
   await page.$eval('input[name="quform_2_6"]', (el) => el.value = 'Luka');
   await page.$eval('input[name="quform_2_9"]', (el) => el.value = 'Moses');
@@ -39,5 +40,14 @@ const puppeteer = require('puppeteer');
 
   await page.click('.quform-submit');
 
-  await browser.close();
+  try {
+    await page.waitForSelector('.quform-success-message-animate', { visible: true });
+  } catch (e) {
+    if (e instanceof puppeteer.errors.TimeoutError) {
+      console.log('success message did not display');
+    }
+  } finally {
+    console.log('Form successfully submitted');
+    await browser.close();
+  }
 })();

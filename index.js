@@ -15,7 +15,6 @@ app.get('/', (req, res) => {
 app.post('/', upload.fields([]), (req, res) => {
   console.log(req.body.quform_2_6);
   console.log(req.body);
-  res.send('you dit it!');
 });
 
 app.listen(3000, () => {
