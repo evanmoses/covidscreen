@@ -42,12 +42,10 @@ const puppeteer = require('puppeteer');
 
   try {
     await page.waitForSelector('.quform-success-message-animate', { visible: true });
-  } catch (e) {
-    if (e instanceof puppeteer.errors.TimeoutError) {
-      console.log('success message did not display');
-    }
-  } finally {
     console.log('Form successfully submitted');
+  } catch (e) {
+    console.log(e);
+  } finally {
     await browser.close();
   }
 })();
